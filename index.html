@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Etch-A-Sketch</title>
+        <link rel="stylesheet" href="style.css" type="text/css">
+    </head>
+    <body>
+        <div class = "input">
+            <button id = "reset">Reset</button>
+        </div>
+        <div class = "container" id = "container">
+
+        </div>
+    </body>
+    <footer>
+        <script>
+            let container = document.querySelector(".container");
+            let resetButton = document.querySelector("#reset");
+            let containerWidth = 500;
+            let gridHeight = 16;
+            let gridWidth = 16;
+            let boxes = document.querySelectorAll('.box');
+            generateGrid();         
+
+            boxes.forEach(box => box.addEventListener("mouseenter", function(){
+                
+                this.style.backgroundColor = rgbRandom();
+            }))
+            resetButton.addEventListener("click", function(){
+                
+                gridSizeRequest();
+                generateGrid();
+            })
+            function gridSizeRequest(){
+                gridHeight = prompt("How many squares per side?");
+                gridWidth = gridHeight;
+                generateGrid();
+            }
+            function generateGrid(){
+                while (container.firstChild){
+                    container.removeChild(container.firstChild);
+                }
+                for (let i = 1; i <= gridHeight; i++) { //creates grid
+                    for (let j = 1; j <= gridWidth; j++){
+                        box = document.createElement("div");
+                        box.className = ("box");
+                        box.id = `${i},${j}`;
+                        box.style.width = `${(containerWidth/gridWidth)}px`;
+                        box.style.height = box.style.width; 
+                        document.getElementById("container").appendChild(box);
+                    }    
+                }
+                boxes = document.querySelectorAll('.box');
+                boxes.forEach(box => box.addEventListener("mouseenter", function(){
+                    this.style.backgroundColor = rgbRandom();
+                }))
+            }
+            function rgbRandom(){
+                let r = Math.floor(Math.random()*255);
+                let g = Math.floor(Math.random()*255);
+                let b = Math.floor(Math.random()*255);
+                return "rgb("+r+","+g+","+b+")";
+            }
+
+            
+        </script>
+    </footer>
+</html>
