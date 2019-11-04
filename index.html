@@ -6,7 +6,9 @@
     </head>
     <body>
         <div class = "input">
-            <button id = "reset">Reset</button>
+            <button id = "size">Change Size</button>
+            <button id = "black">Black</button>
+            <button id = "clear">Clear</button>
         </div>
         <div class = "container" id = "container">
 
@@ -15,46 +17,62 @@
     <footer>
         <script>
             let container = document.querySelector(".container");
-            let resetButton = document.querySelector("#reset");
+            let sizeButton = document.querySelector("#size");
+            let blackButton = document.querySelector("#black");
+            let clearButton = document.querySelector("#clear");
             let containerWidth = 500;
-            let gridHeight = 16;
-            let gridWidth = 16;
-            let boxes = document.querySelectorAll('.box');
-            generateGrid();         
+            let gridSize = 16;
+            generateGrid(gridSize);
 
-            boxes.forEach(box => box.addEventListener("mouseenter", function(){
-                
-                this.style.backgroundColor = rgbRandom();
-            }))
-            resetButton.addEventListener("click", function(){
-                
-                gridSizeRequest();
-                generateGrid();
+            sizeButton.addEventListener("click", function(){
+               generateGrid(gridSizeRequest());
+            })        
+
+            blackButton.addEventListener("click", function(){
+                boxBackgroundColor("black");
             })
+
+            clearButton.addEventListener("click", function(){
+                let boxes = document.querySelectorAll(".box");
+                boxes.forEach(box => box.style.backgroundColor = "white");
+            })
+
             function gridSizeRequest(){
-                gridHeight = prompt("How many squares per side?");
-                gridWidth = gridHeight;
-                generateGrid();
+                gridSize = prompt("How many squares per side?");
+                return gridSize;
             }
-            function generateGrid(){
+
+            function generateGrid(size){
+                
                 while (container.firstChild){
                     container.removeChild(container.firstChild);
                 }
-                for (let i = 1; i <= gridHeight; i++) { //creates grid
-                    for (let j = 1; j <= gridWidth; j++){
+                for (let i = 1; i <= size; i++) { //creates grid
+                    for (let j = 1; j <= size; j++){
                         box = document.createElement("div");
                         box.className = ("box");
                         box.id = `${i},${j}`;
-                        box.style.width = `${(containerWidth/gridWidth)}px`;
+                        box.style.width = `${(containerWidth/gridSize)}px`;
                         box.style.height = box.style.width; 
                         document.getElementById("container").appendChild(box);
                     }    
                 }
+
+                boxBackgroundColor("random");
+            }
+
+            function boxBackgroundColor(color){
                 boxes = document.querySelectorAll('.box');
                 boxes.forEach(box => box.addEventListener("mouseenter", function(){
-                    this.style.backgroundColor = rgbRandom();
+                    if (color == "random"){
+                        this.style.backgroundColor = rgbRandom();
+                    } else {
+                        this.style.backgroundColor = color;
+                    }
+
                 }))
             }
+
             function rgbRandom(){
                 let r = Math.floor(Math.random()*255);
                 let g = Math.floor(Math.random()*255);
@@ -62,6 +80,7 @@
                 return "rgb("+r+","+g+","+b+")";
             }
 
+            
             
         </script>
     </footer>
